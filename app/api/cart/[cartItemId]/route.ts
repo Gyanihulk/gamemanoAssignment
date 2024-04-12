@@ -2,7 +2,6 @@ import { NextResponse } from "next/server";
 import { db } from "@/lib/db";
 import { currentUser } from "@/lib/auth";
 
-
 export async function PATCH(
   req: Request,
   { params }: { params: { cartItemId: string } }
@@ -11,17 +10,14 @@ export async function PATCH(
     const user = await currentUser();
 
     if (!user) {
-        return new NextResponse("Unauthorized", { status: 401 });
+      return new NextResponse("Unauthorized", { status: 401 });
     }
     const { quantity } = await req.json();
 
-console.log(quantity,params.cartItemId)
-    // Validate the quantity
     if (!quantity || quantity < 1) {
       return new NextResponse("Bad Request", { status: 400 });
     }
 
-    // Check if the cart item exists and belongs to the user's cart
     const cartItem = await db.cartItem.findFirst({
       where: {
         id: params.cartItemId,
@@ -30,7 +26,7 @@ console.log(quantity,params.cartItemId)
         },
       },
       include: {
-        cart: true, // Include the cart to check ownership
+        cart: true,
       },
     });
 
@@ -38,7 +34,6 @@ console.log(quantity,params.cartItemId)
       return new NextResponse("Not Found", { status: 404 });
     }
 
-    // Update the cart item quantity
     const updatedCartItem = await db.cartItem.update({
       where: { id: params.cartItemId },
       data: { quantity },
@@ -54,40 +49,37 @@ console.log(quantity,params.cartItemId)
   }
 }
 
-
 export async function DELETE(
-    req: Request,
-    { params }: { params: { cartItemId: string } }
-  ) {
-    try {
-      const user = await currentUser();
-  
-      if (!user) {
-        return new NextResponse("Unauthorized", { status: 401 });
-      }
-  
-      // Check if the cart item exists and belongs to the user's cart
-      const cartItem = await db.cartItem.findFirst({
-        where: {
-          id: params.cartItemId,
-          cart: {
-            userId: user.id,
-          },
-        },
-      });
-  
-      if (!cartItem) {
-        return new NextResponse("Not Found", { status: 404 });
-      }
-  
-      // Delete the cart item
-      await db.cartItem.delete({
-        where: { id: params.cartItemId },
-      });
-  
-      return new NextResponse("Cart item deleted successfully", { status: 200 });
-    } catch (error) {
-      console.error("[DELETE_CART_ITEM]", error);
-      return new NextResponse("Internal Server Error", { status: 500 });
+  req: Request,
+  { params }: { params: { cartItemId: string } }
+) {
+  try {
+    const user = await currentUser();
+
+    if (!user) {
+      return new NextResponse("Unauthorized", { status: 401 });
     }
+
+    const cartItem = await db.cartItem.findFirst({
+      where: {
+        id: params.cartItemId,
+        cart: {
+          userId: user.id,
+        },
+      },
+    });
+
+    if (!cartItem) {
+      return new NextResponse("Not Found", { status: 404 });
+    }
+
+    await db.cartItem.delete({
+      where: { id: params.cartItemId },
+    });
+
+    return new NextResponse("Cart item deleted successfully", { status: 200 });
+  } catch (error) {
+    console.error("[DELETE_CART_ITEM]", error);
+    return new NextResponse("Internal Server Error", { status: 500 });
   }
+}

@@ -4,9 +4,9 @@ import { currentUser } from "@/lib/auth";
 import { Movie, CartItem } from "@/types";
 export async function PUT(request: Request) {
     try {
+        console.log("test")
         const user = await currentUser();
-
-        if (!user) {
+        if (user === null) {
             return new NextResponse("Unauthorized", { status: 401 });
         }
 

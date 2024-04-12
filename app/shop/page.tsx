@@ -1,5 +1,5 @@
-import { SearchInput } from "@/components/searchInput";
-import { MoviesList } from "@/components/movieList";
+import { SearchInput } from "@/components/search-input";
+import { MoviesList } from "@/components/movie-list";
 import { getMovies } from "@/actions/getMovies";
 
 interface SearchPageProps {

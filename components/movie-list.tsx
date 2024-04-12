@@ -1,6 +1,6 @@
 import { Movie } from "@prisma/client";
 
-import { MovieCard } from "@/components/movieCard";
+import { MovieCard } from "@/components/movie-card";
 
 
 interface MoviesListProps {

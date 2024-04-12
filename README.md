@@ -62,22 +62,6 @@ Adds a movie to the user's cart. If the movie is already in the cart, it increme
 ```
 
 
-## Update Cart Item Quantity
-
-**PATCH** `/api/cart/{cartItemId}`
-
-Updates the quantity of a specific cart item in the user's cart.
-
-### URL Path Example
-`/api/cart/cartItem_123`
-
-### Request Body Example
-```json
-{
-  "quantity": 2
-}
-```
-
 ## Get User Cart
 
 **GET** `/api/cart`
@@ -103,3 +87,41 @@ Updates the details of a specific cart item in the user's cart, such as quantity
   "quantity": 3
 }
 ```
+
+## Checkout
+
+**POST** `/api/cart/checkout`
+
+Create a order and checkouts o payment page 
+
+### URL Path Example
+`api/cart/checkout`
+
+
+## Create Address
+
+**POST** `/api/user/address`
+
+Creates a new address for the current user.
+
+### Request Body Example
+```json
+{
+  "street": "123 Main St",
+  "city": "Anytown",
+  "state": "Anystate",
+  "zipCode": "12345",
+  "country": "Countryname",
+  "phone": "123-456-7890"
+}
+```
+
+## Get My Orders
+
+**GET** `/api/user/myorders`
+
+Retrieves the orders associated with the current authenticated user.
+
+*No request body required for GET requests.*
+
+

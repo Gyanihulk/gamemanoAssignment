@@ -6,7 +6,7 @@ import {usePathname} from "next/navigation"
 
 const guestRoutes = [
   { icon: Layout, label: "Browse", href: "/shop" },
-  { icon: Compass, label: "My orders", href: "/" },
+  { icon: Compass, label: "My orders", href: "/myorders" },
 ];
 
 const adminRoutes = [

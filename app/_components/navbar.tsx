@@ -1,4 +1,4 @@
-import { NavbarRoutes } from "@/components/navbarRoutes"
+import { NavbarRoutes } from "@/components/navbar-routes"
 import { MobileSidebar } from "./mobileSidebar"
 import { ModeToggle } from "@/components/modeToggle"
 

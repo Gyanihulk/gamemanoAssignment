@@ -14,7 +14,7 @@ export function CartItemActions({ item }: CartItemActionsProps) {
 
   const handleQuantityChange = (qty: number) => {
     const quantity = Number(qty)
-    console.log(qty)
+
     if (quantity >= 1) {
       updateCartItemQuantity(item.id, quantity)
     }

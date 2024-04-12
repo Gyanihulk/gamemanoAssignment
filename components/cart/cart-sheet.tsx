@@ -13,9 +13,10 @@ import { Separator } from "../ui/separator";
 import { ScrollArea } from "../ui/scroll-area";
 import { useCart } from "@/context/cart-context";
 import { CartItem } from "./cart-item";
+import { formatPrice } from "@/lib/format";
 
 export default function CartSheet() {
-  const { cartItems } = useCart();
+  const { cartItems,cartTotal ,checkoutCart} = useCart();
   const itemCount = cartItems.reduce((total, item) => total + item.quantity, 0);
 
   return (
@@ -42,7 +43,11 @@ export default function CartSheet() {
         <SheetHeader className="px-1">
           <SheetTitle className="flex ">
             Cart {itemCount > 0 && `(${itemCount})`}
-          <Button  className="ml-auto mr-10" variant="default">Checkout</Button>
+            <div className="ml-auto mr-10">
+
+            
+           Total: {formatPrice(cartTotal)}
+          <Button onClick={checkoutCart} className="ml-3 mr-10" variant="default">Checkout</Button></div>
           </SheetTitle>
         </SheetHeader>
         <Separator />

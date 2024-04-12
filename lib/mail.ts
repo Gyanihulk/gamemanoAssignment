@@ -24,7 +24,6 @@ export const sendTwoFactorTokenEmail = async (
     subject: "2FA Code",
     html: `<p>Your 2FA code: ${token}</p>`
   }
-  console.log(mail)
   await transporter.sendMail(mail);
 
 };
