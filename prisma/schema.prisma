@@ -1,0 +1,138 @@
+// prisma/schema.prisma
+datasource db {
+  provider  = "postgresql"
+  url  	    = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+enum UserRole {
+  ADMIN
+  USER 
+  MERCHANT
+}
+
+model User {
+  id            String    @id @default(cuid())
+  name          String?
+  email         String?   @unique
+  emailVerified DateTime?
+  image         String?
+  password      String?
+  role          UserRole @default(USER)
+  accounts      Account[]
+  addresses Address[]
+  cart      Cart?
+  orders    Order[]
+}
+
+model Address {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  street    String
+  city      String
+  state     String
+  zipCode   String
+  country   String
+}
+model Account {
+  id                 String  @id @default(cuid())
+  userId             String
+  type               String
+  provider           String
+  providerAccountId  String
+  refresh_token      String?  @db.Text
+  access_token       String?  @db.Text
+  expires_at         Int?
+  token_type         String?
+  scope              String?
+  id_token           String?  @db.Text
+  session_state      String?
+  is_admin           Boolean
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model VerificationToken {
+  id String @id @default(cuid())
+  email String
+  token String @unique
+  expires DateTime
+
+  @@unique([email, token])
+}
+
+model PasswordResetToken {
+  id String @id @default(cuid())
+  email String
+  token String @unique
+  expires DateTime
+
+  @@unique([email, token])
+}
+
+
+model Movie {
+  id           String   @id @default(cuid())
+  title        String
+  releaseDate  DateTime
+  posterUrl    String?
+  genres       String[]
+  runtime      Int?    
+  language     String?
+  director     String?
+  writers      String[]
+  actors       String[]
+  plot         String?
+  imdbRating   Float?   
+  imdbID       String?  
+  originalTitle       String?  
+  isAdult       Boolean?  
+  price        Int?
+  cartItems    CartItem[]
+  orderItems   OrderItem[]
+}
+
+model Cart {
+  id        String     @id @default(cuid())
+  userId    String     @unique
+  user      User       @relation(fields: [userId], references: [id])
+  cartItems CartItem[]
+  total     Int        @default(0)
+}
+
+model CartItem {
+  id        String  @id @default(cuid())
+  movieId   String
+  movie     Movie   @relation(fields: [movieId], references: [id])
+  cartId    String
+  cart      Cart    @relation(fields: [cartId], references: [id])
+  quantity  Int     @default(1)
+  createdAt DateTime @default(now())
+}
+
+model Order {
+  id        String     @id @default(cuid())
+  userId    String
+  user      User       @relation(fields: [userId], references: [id])
+  orderItems OrderItem[]
+  total     Int
+  status    String     @default("PENDING")
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+}
+
+model OrderItem {
+  id        String  @id @default(cuid())
+  movieId   String
+  movie     Movie   @relation(fields: [movieId], references: [id])
+  orderId   String
+  order     Order   @relation(fields: [orderId], references: [id])
+  quantity  Int
+  price     Int
+}
