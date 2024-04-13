@@ -8,9 +8,11 @@ import { ThemeToggle } from "./theme-toggle";
 import CartSheet from "./cart/cart-sheet";
 import { useCurrentRole } from "@/hooks/use-current-role";
 import { UserButton } from "@/components/auth/user-button";
+import { useCurrentUser } from "@/hooks/use-current-user";
 export const NavbarRoutes = () => {
   const pathname = usePathname();
   const role = useCurrentRole();
+  const user = useCurrentUser();
 
   const isAdmin = pathname?.startsWith("/admin");
   return (
@@ -33,7 +35,7 @@ export const NavbarRoutes = () => {
       )}
       <CartSheet />
       <ThemeToggle />
-      <UserButton/>
+      {user && <UserButton/>}
     </div>
   );
 };

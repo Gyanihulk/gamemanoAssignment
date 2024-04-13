@@ -6,7 +6,7 @@ import { UserRole } from "@prisma/client";
 export async function GET() {
   try {
     const user = await currentUser();
-    console.log(user)
+
     if (!user) {
       return new NextResponse(JSON.stringify({ message: "Unauthorized" }), { status: 401 });
     }

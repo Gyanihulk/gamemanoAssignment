@@ -32,14 +32,14 @@ export const MovieCard = ({
 
   return (
     <div className="group hover:shadow-sm transition overflow-hidden border rounded-lg p-3 h-full ">
-      <Link href={`/movies/${id}`} >
+      <Link href={`/movie/${id}`} >
         <div className="block relative w-full aspect-video rounded-md overflow-hidden">
           <Image layout="fill" className="object-cover" alt={title} src={imageUrl} />
         </div>
       </Link>
       <div className="flex flex-row ">
         <div className="flex flex-col pt-2 ">
-          <Link href={`/movies/${id}`} >
+          <Link href={`/movie/${id}`} >
            
               <div className="text-lg md:text-base font-medium group-hover:text-sky-700 transition line-clamp-2">
                 {title.length > 25 ? `${title.slice(0, 20)}...` : title}

@@ -73,3 +73,13 @@ export interface OrderItem {
   quantity: number;
   price: number;
 }
+
+
+export type GetMovies = {
+  title?: string;
+  genreName?: string;
+  language?: string;
+  director?: string;
+  actors?: string[];
+  imdbRating?: number;
+};

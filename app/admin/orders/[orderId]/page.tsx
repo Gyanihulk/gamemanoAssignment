@@ -51,19 +51,19 @@ const OrderPage = ({ params }: { params: { orderId: string } }) => {
       const response = await axios.patch(`/api/admin/orders/${orderId}`, {
         status: newStatus,
       });
-      console.log("Order status updated:", response.data);
+  
     } catch (error) {
       console.error("Failed to update order status:", error);
     }
   };
 
-  // if (isLoading) {
-  //   return <div>Loading...</div>;
-  // }
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
 
-  // if (error) {
-  //   return <div>Error: {error.message}</div>;
-  // }
+  if (error) {
+    return <div>Error: {error.message}</div>;
+  }
   return (
     <div>
       <Card className="w-[300px]">

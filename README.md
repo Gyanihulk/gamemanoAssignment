@@ -6,47 +6,144 @@ npm i
 
 ### Setup .env file
 
-
 ```js
 DATABASE_URL=
 DIRECT_URL=
 
 AUTH_SECRET=
 
-RESEND_API_KEY=
-
 NEXT_PUBLIC_APP_URL=
+
+MAIL_USER=
+APP_PASSWORD=
+
 ```
 
 ### Setup Prisma
+
 ```shell
+npx prisma migrate dev
 npx prisma generate
 npx prisma db push
 ```
 
+#### Create a New Migration
+
+To create a new migration after modifying your Prisma schema, you can use the `prisma migrate dev` command. This will create a new SQL migration file in the `prisma/migrations` directory and apply it to your development database.
+
+```shell
+npx prisma migrate dev --name <name_of_your_migration>
+```
+
+
 ### Start the app
 
 ```shell
-npm run dev
+npm run dev 
 ```
 
-## Available commands
+## OR
 
-Running commands with npm `npm run [command]`
-
-| command         | description                              |
-| :-------------- | :--------------------------------------- |
-| `dev`           | Starts a development instance of the app |
+```shell
+yarn dev 
+```
 
 
 
+# Prisma Utility Scripts
 
-https://www.omdbapi.com/?apikey=7498ae20
+This directory contains several utility scripts for managing movie data in the database using Prisma and external APIs.
 
-npx ts-node .\prisma\movieSeed.ts
+# filterMovies.ts
+
+This script filters movies in the database and retrieves only those released after the year 2020.
+
+### How to run:
+
+```shell
+npx ts-node prisma/filterMovies.ts
+```
+# Movie Seed Script
+
+## Description
+The `movieSeed.ts` script seeds the database with initial movie data. It is typically used to populate the database with a set of movies for development or testing purposes.
+
+## How to Run the Script
+To run the movie seeding script, use the following command:
+
+```shell
+npx ts-node prisma/movieSeed.ts
+```
+### `updateMovieData.md`
+
+```markdown
+# Update Movie Data Script
+
+## Description
+This script uses the OMDb API to fetch and update movie records with additional information such as posters, plot, director, actors, and more.
+
+## Prerequisites
+- Obtain an API key from [OMDb API](https://www.omdbapi.com/).
+- Update that in the script
+
+## How to Run the Script
+To execute the script and update movie prices, run the following command:
+```shell
+ npx ts-node prisma/updateMovieData.ts
+```
+
+### `updateMoviePrice.md`
+
+
+# Update Movie Price Script
+
+## Description
+The `updateMoviePrice.ts` script is used to add a random price to each movie record in the database. The price is set to a random value between 100 and 500, specifically for DVDs.
+
+## How to Run the Script
+To execute the script and update movie prices, run the following command:
+
+```shell
+npx ts-node prisma/updateMoviePrice.ts
+```
+
+
 
 
 # API Endpoints
+
+
+## Filter Movies
+
+**GET** `/api/movie`
+
+Retrieves a list of movies filtered by various criteria such as actors, director, genre, language, and title. If no parameters are provided, it returns all movies.
+
+### Query Parameters
+
+- `actors`: Filter movies by actors' names. Supports partial, case-insensitive matching.
+- `director`: Filter movies by the director's name. Supports partial, case-insensitive matching.
+- `genreName`: Filter movies by genre. Supports partial, case-insensitive matching.
+- `language`: Filter movies by language. Supports partial, case-insensitive matching.
+- `title`: Filter movies by title. Supports partial, case-insensitive matching.
+
+### Request URL Example
+
+```plaintext
+http://localhost:3000/api/movie?actors=pra&director=maruth&genreName=horro&language=hindi&title=raj
+```
+
+## Get Movie by ID
+
+**GET** `/api/movie/:id`
+
+Retrieves detailed information about a specific movie by its unique identifier (ID).
+
+
+### URL Parameters
+
+- `id`: The unique identifier of the movie you want to retrieve.
+
 
 ## Add Movie to Cart
 
@@ -104,6 +201,38 @@ Create a order and checkouts to payment page
 **POST** `/api/user/address`
 
 Creates a new address for the current user.
+
+
+## Get Address
+
+**GET** `/api/user/address`
+
+Gets a new address for the current user.
+
+
+### Update Address (User)
+
+## Update Address (User)
+
+**PUT** `/api/user/address/{addressId}`
+
+Updates an existing address for the current authenticated user.
+
+### URL Parameters
+
+- `addressId`: The unique identifier of the address to update.
+
+### Request Body
+
+- `street`: The new street of the address.
+- `city`: The new city of the address.
+- `state`: The new state of the address.
+- `zipCode`: The new zip code of the address.
+- `country`: The new country of the address.
+- `phone`: The new phone number associated with the address.
+
+
+
 
 ### Request Body Example
 ```json

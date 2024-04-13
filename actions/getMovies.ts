@@ -1,5 +1,5 @@
-import { db } from '@/lib/db';
-import { Movie } from '@prisma/client';
+import { db } from "@/lib/db";
+import { Movie } from "@prisma/client";
 
 type GetMovies = {
   title?: string;
@@ -23,51 +23,55 @@ export const getMovies = async ({
       where: {
         title: {
           contains: title,
-          mode: 'insensitive', // Case-insensitive search
+          mode: "insensitive",
         },
         posterUrl: {
-          not: null || 'N/A',
+          not: null || "N/A",
         },
-        ...(genreName && {
-          genres: {
-            has: genreName,
-          },
-        }),
         ...(language && {
           language: {
             contains: language,
-            mode: 'insensitive',
-          },
-        }),
-        ...(director && {
-          director: {
-            contains: director,
-            mode: 'insensitive',
-          },
-        }),
-        ...(actors && {
-          actors: {
-            hasSome: actors.map((actor) => ({
-              contains: actor,
-              mode: 'insensitive',
-            })),
-          },
-        }),
-        ...(imdbRating && {
-          imdbRating: {
-            gte: imdbRating, // Greater than or equal to
+            mode: "insensitive",
           },
         }),
       },
       orderBy: {
-        releaseDate: 'desc',
+        releaseDate: "desc",
       },
       take: 100,
     });
 
-    return movies;
+    // Filter the movies in JavaScript
+    let filteredMovies = movies.filter((movie: Movie) => {
+      // Filter by genreName if provided
+      const matchesGenre = genreName
+        ? movie.genres.some((genre: string) =>
+            genre.toLowerCase().includes(genreName.toLowerCase())
+          )
+        : true;
+
+      // Filter by director if provided
+      const matchesDirector = director
+        ? movie.director?.toLowerCase().includes(director.toLowerCase())
+        : true;
+
+      // Filter by actors if provided
+      const matchesActors = actors
+        ? actors.some((actor) =>
+            movie.actors?.some((movieActor) =>
+              movieActor.toLowerCase().includes(actor.toLowerCase())
+            )
+          )
+        : true;
+
+      // Only include movies that match all provided filters
+      return matchesGenre && matchesDirector && matchesActors;
+    });
+
+
+    return filteredMovies;
   } catch (error) {
-    console.log('[GET_MOVIES]', error);
+    console.log("[GET_MOVIES]", error);
     return [];
   }
 };

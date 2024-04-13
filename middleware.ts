@@ -10,12 +10,26 @@ import {
 
 const { auth } = NextAuth(authConfig);
 
+
 export default auth((req) => {
   const { nextUrl } = req;
   const isLoggedIn = !!req.auth;
-
+  const publicRouteCheck = (pathname:string) => {
+    // Check for exact matches
+    if (publicRoutes.includes(pathname)) {
+      return true;
+    }
+  
+    // Check for pattern match for movie ids
+    const movieIdPattern = /^\/movie\/[^/]+$/;
+    if (movieIdPattern.test(pathname)) {
+      return true;
+    }
+  
+    return false;
+  };
   const isApiAuthRoute = nextUrl.pathname.startsWith(apiAuthPrefix);
-  const isPublicRoute = publicRoutes.includes(nextUrl.pathname);
+  const isPublicRoute = publicRouteCheck(nextUrl.pathname);
   const isAuthRoute = authRoutes.includes(nextUrl.pathname);
 
   if (isApiAuthRoute) {
