@@ -1,16 +1,16 @@
 "use client";
 
-
 import { usePathname } from "next/navigation";
 import { LogOut } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { ThemeToggle } from "./theme-toggle";
 import CartSheet from "./cart/cart-sheet";
-
+import { useCurrentRole } from "@/hooks/use-current-role";
+import { UserButton } from "@/components/auth/user-button";
 export const NavbarRoutes = () => {
-
   const pathname = usePathname();
+  const role = useCurrentRole();
 
   const isAdmin = pathname?.startsWith("/admin");
   return (
@@ -23,14 +23,17 @@ export const NavbarRoutes = () => {
           </Button>
         </Link>
       ) : (
-        <Link href={"/admin"}>
-          <Button size={"sm"} variant={"ghost"}>
-            Admin Mode
-          </Button>
-        </Link>
+        role === "ADMIN" && (
+          <Link href={"/admin/analytics"}>
+            <Button size={"sm"} variant={"ghost"}>
+              Admin Mode
+            </Button>
+          </Link>
+        )
       )}
-      <CartSheet/>
-<ThemeToggle/>
+      <CartSheet />
+      <ThemeToggle />
+      <UserButton/>
     </div>
   );
 };

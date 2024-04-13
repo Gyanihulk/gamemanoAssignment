@@ -1,10 +1,9 @@
 "use client";
 
 import * as z from "zod";
-import { useState, useTransition } from "react";
+import { useEffect, useState, useTransition } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-
 
 import { Input } from "@/components/ui/input";
 import {
@@ -13,9 +12,9 @@ import {
   FormField,
   FormItem,
   FormLabel,
-  FormMessage,  
+  FormMessage,
 } from "@/components/ui/form";
-import { CardWrapper } from "@/components/auth/card-wrapper"
+import { CardWrapper } from "@/components/auth/card-wrapper";
 import { Button } from "@/components/ui/button";
 import { FormError } from "@/components/form-error";
 import { FormSuccess } from "@/components/form-success";
@@ -27,7 +26,8 @@ export const AddressForm = () => {
   const [error, setError] = useState<string | undefined>();
   const [success, setSuccess] = useState<string | undefined>();
   const [isPending, startTransition] = useTransition();
-
+  const [addressExists, setAddressExists] = useState<boolean>(false); // New state to track if the address exists
+  const [addressId, setAddressId] = useState<string | null>(null); //
   const form = useForm<z.infer<typeof AddressSchema>>({
     resolver: zodResolver(AddressSchema),
     defaultValues: {
@@ -39,26 +39,54 @@ export const AddressForm = () => {
       country: "",
     },
   });
+  useEffect(() => {
+    const fetchAddress = async () => {
+      try {
+        // Assuming the GET request returns an object with an 'id' field
+        const response = await axios.get("/api/user/address");
+        const addressData = response.data;
 
-  const onSubmit = (values: z.infer<typeof RegisterSchema>) => {
+        if (addressData) {
+          form.reset(addressData);
+          setAddressExists(true);
+          setAddressId(addressData.id); // Store the address ID
+        }
+      } catch (error) {
+        console.error("Failed to fetch address:", error);
+      }
+    };
+
+    fetchAddress();
+  }, [form]);
+
+  const onSubmit = async (values: z.infer<typeof AddressSchema>) => {
     setError("");
     setSuccess("");
-  
-    startTransition(async() => {
-      console.log(values)
-      try {
-        const response = await axios.post('/api/user/address', values);
-        setSuccess('Address created successfully.');
-      } catch (error) {
-        // Check if the error response has data and a message
-        if (error.response && error.response.data && error.response.data.message) {
-          setError(error.response.data.message);
-        } else {
-          setError('Failed to create address. Please try again.');
-        }
+
+    // Determine the endpoint based on whether the address exists
+    const endpoint = addressExists ? `/api/user/address/${addressId}` : "/api/user/address";
+
+    try {
+      const response = await axios({
+        method: addressExists ? 'put' : 'post',
+        url: endpoint,
+        data: values,
+      });
+      setSuccess(addressExists ? "Address updated successfully." : "Address created successfully.");
+      if (!addressExists) {
+        setAddressExists(true);
+        setAddressId(response.data.id); // Store the new address ID if the address didn't exist before
       }
-    });
+    } catch (error) {
+      if (error.response && error.response.data && error.response.data.message) {
+        setError(error.response.data.message);
+      } else {
+        setError("Failed to process address. Please try again.");
+      }
+    }
   };
+
+
 
   return (
     <CardWrapper
@@ -77,7 +105,11 @@ export const AddressForm = () => {
                 <FormItem>
                   <FormLabel>Street</FormLabel>
                   <FormControl>
-                    <Input {...field} disabled={isPending} placeholder="123 Main St" />
+                    <Input
+                      {...field}
+                      disabled={isPending}
+                      placeholder="123 Main St"
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -91,7 +123,11 @@ export const AddressForm = () => {
                 <FormItem>
                   <FormLabel>City</FormLabel>
                   <FormControl>
-                    <Input {...field} disabled={isPending} placeholder="Anytown" />
+                    <Input
+                      {...field}
+                      disabled={isPending}
+                      placeholder="Anytown"
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -105,20 +141,28 @@ export const AddressForm = () => {
                 <FormItem>
                   <FormLabel>State</FormLabel>
                   <FormControl>
-                    <Input {...field} disabled={isPending} placeholder="State" />
+                    <Input
+                      {...field}
+                      disabled={isPending}
+                      placeholder="State"
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
-             <FormField
+            <FormField
               control={form.control}
               name="phone"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Phone</FormLabel>
                   <FormControl>
-                    <Input {...field} disabled={isPending} placeholder="Phone" />
+                    <Input
+                      {...field}
+                      disabled={isPending}
+                      placeholder="Phone"
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -132,7 +176,11 @@ export const AddressForm = () => {
                 <FormItem>
                   <FormLabel>Zip Code</FormLabel>
                   <FormControl>
-                    <Input {...field} disabled={isPending} placeholder="12345" />
+                    <Input
+                      {...field}
+                      disabled={isPending}
+                      placeholder="12345"
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -146,7 +194,11 @@ export const AddressForm = () => {
                 <FormItem>
                   <FormLabel>Country</FormLabel>
                   <FormControl>
-                    <Input {...field} disabled={isPending} placeholder="Country" />
+                    <Input
+                      {...field}
+                      disabled={isPending}
+                      placeholder="Country"
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

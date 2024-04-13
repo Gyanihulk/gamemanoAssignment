@@ -2,7 +2,7 @@ const fs = require('fs');
 const Papa = require('papaparse');
 const path = require('path');
 
-const tsvFilePath = path.resolve('D:/new', 'title.basics.tsv');
+const tsvFilePath = path.resolve(__dirname, 'title.basics.tsv');
 
 const fileStream = fs.createReadStream(tsvFilePath, 'utf8');
 
@@ -26,7 +26,7 @@ Papa.parse(fileStream, {
     });
 
     // Write the updated TSV content to a new file
-    const newFilePath = path.resolve('D:/new', 'filteredMovies.tsv');
+    const newFilePath = path.resolve(__dirname, 'filteredMovies.tsv');
     fs.writeFileSync(newFilePath, updatedTSV, 'utf8');
     console.log('Filtered TSV file saved.');
   },

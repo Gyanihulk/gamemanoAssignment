@@ -42,6 +42,7 @@ Running commands with npm `npm run [command]`
 
 
 https://www.omdbapi.com/?apikey=7498ae20
+
 npx ts-node .\prisma\movieSeed.ts
 
 
@@ -92,7 +93,7 @@ Updates the details of a specific cart item in the user's cart, such as quantity
 
 **POST** `/api/cart/checkout`
 
-Create a order and checkouts o payment page 
+Create a order and checkouts to payment page 
 
 ### URL Path Example
 `api/cart/checkout`
@@ -124,4 +125,45 @@ Retrieves the orders associated with the current authenticated user.
 
 *No request body required for GET requests.*
 
+
+# Admin Orders API
+
+**GET** `/admin/orders`
+
+Allows administrators to retrieve a list of all orders placed on the platform.
+
+*No request body required for GET requests.*
+
+# Admin Orders API
+
+**GET** `/admin/orders/orderId`
+
+Allows administrators to retrieve a Value of any order by id.
+
+*No request body required for GET requests.*
+
+
+## Get Order by ID (Admin)
+
+**GET** `/admin/orders/{orderId}`
+
+Retrieves the details of a specific order by its ID. This endpoint is accessible only to administrators.
+
+### URL Parameters
+
+- `orderId`: The unique identifier of the order to retrieve.
+
+
+
+### Update Order Status to Delivered (User)
+
+## Update Order Status to Delivered (User)
+
+**POST** `/api/user/myorders/{orderId}/delivered`
+
+Updates the status of a specific order to "DELIVERED". This endpoint is accessible only to the user who owns the order.
+
+### URL Parameters
+
+- `orderId`: The unique identifier of the order to update.
 

@@ -17,11 +17,22 @@ export default function Home() {
           "text-6xl font-semibold text-white drop-shadow-md",
           font.className,
         )}>
-          🔐 Auth
+          GAME MANO  
         </h1>
-        
+        <h1 className={cn(
+          "text-6xl font-semibold text-white drop-shadow-md",
+          font.className,
+        )}>
+          MOVIE DVD
+        </h1>
+        <h1 className={cn(
+          "text-6xl font-semibold text-white drop-shadow-md",
+          font.className,
+        )}>
+         E-COMMERCE ASSIGNMENT
+        </h1>
       </div>
-        <div>Hello</div>
+        
     </main>
   )
 }

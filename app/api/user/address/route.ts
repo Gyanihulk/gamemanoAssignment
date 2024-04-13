@@ -64,36 +64,3 @@ export async function GET(request: Request) {
     return new NextResponse(JSON.stringify({ message: "Internal Server Error" }), { status: 500 });
   }
 }
-
-export async function PUT(request: Request) {
-  try {
-    const user = await currentUser();
-
-    if (!user) {
-      return new NextResponse(JSON.stringify({ message: "Unauthorized" }), { status: 401 });
-    }
-
-    const { street, city, state, zipCode, country, phone } = await request.json();
-
-    if (!street || !city || !state || !zipCode || !country || !phone) {
-      return new NextResponse(JSON.stringify({ message: "All fields are required" }), { status: 400 });
-    }
-
-    const updatedAddress = await db.address.update({
-      where: { userId: user.id },
-      data: {
-        street,
-        city,
-        state,
-        zipCode,
-        country,
-        phone,
-      },
-    });
-
-    return new NextResponse(JSON.stringify(updatedAddress), { status: 200 });
-  } catch (error) {
-    console.error("[UPDATE_ADDRESS_API]", error);
-    return new NextResponse(JSON.stringify({ message: "Internal Server Error" }), { status: 500 });
-  }
-}

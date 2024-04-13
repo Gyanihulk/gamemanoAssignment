@@ -56,7 +56,6 @@ export const CartProvider = ({ children }: Props) => {
   const addToCart = async (movieId: string) => {
     try {
       const response = await axios.put(`/api/cart/addMovie/`, { movieId });
-      console.log(response);
       if (response.status === 200) {
         toast.success("Movie added to Cart");
         SetRefresh(!refresh);
@@ -128,6 +127,7 @@ export const CartProvider = ({ children }: Props) => {
       const response = await axios.post(`/api/cart/checkout`);
       if (response.status === 200) {
         toast.success("Checkout successful! Order has been created.");
+        toast.success("Redirect to payment page.");
       } else {
         toast.error("Checkout failed. Please try again.");
       }
