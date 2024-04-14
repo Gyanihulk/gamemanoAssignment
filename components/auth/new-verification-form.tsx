@@ -1,13 +1,14 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
-import { BeatLoader } from "react-spinners";
+
 import { useSearchParams } from "next/navigation";
 
 import { newVerification } from "@/actions/new-verification";
 import { CardWrapper } from "@/components/auth/card-wrapper";
 import { FormError } from "@/components/form-error";
 import { FormSuccess } from "@/components/form-success";
+import { Icons } from "../icons";
 
 export const NewVerificationForm = () => {
   const [error, setError] = useState<string | undefined>();
@@ -47,7 +48,9 @@ export const NewVerificationForm = () => {
     >
       <div className="flex items-center w-full justify-center">
         {!success && !error && (
-          <BeatLoader />
+          <div className="flex justify-center items-center">
+          <Icons.spinner className="h-4 w-4 animate-spin" />
+        </div>
         )}
         <FormSuccess message={success} />
         {!success && (

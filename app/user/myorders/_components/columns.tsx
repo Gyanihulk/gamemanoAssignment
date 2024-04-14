@@ -83,7 +83,7 @@ export const columns: ColumnDef<Order>[] = [
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          Action
+          Accepted
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       );
@@ -96,7 +96,7 @@ export const columns: ColumnDef<Order>[] = [
           disabled={row.original.status === "DELIVERED"} 
         >
           <CheckCircle className="mr-2 h-4 w-4" />
-          Deliver
+          Accepted
         </Button>
       );
     },

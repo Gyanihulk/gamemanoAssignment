@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { SearchInput } from "@/components/search-input";
 import { MoviesList } from "@/components/movie-list";
+import { Icons } from '@/components/icons';
 
 interface SearchPageProps {
   searchParams: {
@@ -39,7 +40,9 @@ const SearchPage = ({ searchParams }: SearchPageProps) => {
         <SearchInput  />
       </div>
       <div className="p-6 space-y-4">
-        {movies.length==0?<>Loading</>:<MoviesList items={movies} />}
+        {movies.length==0?<div className="flex justify-center items-center">
+        <Icons.spinner className="h-4 w-4 animate-spin" />
+      </div>:<MoviesList items={movies} />}
       </div>
     </>
   );

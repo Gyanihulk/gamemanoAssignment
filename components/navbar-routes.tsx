@@ -9,6 +9,7 @@ import CartSheet from "./cart/cart-sheet";
 import { useCurrentRole } from "@/hooks/use-current-role";
 import { UserButton } from "@/components/auth/user-button";
 import { useCurrentUser } from "@/hooks/use-current-user";
+import { LoginButton } from "./auth/login-button";
 export const NavbarRoutes = () => {
   const pathname = usePathname();
   const role = useCurrentRole();
@@ -35,7 +36,15 @@ export const NavbarRoutes = () => {
       )}
       <CartSheet />
       <ThemeToggle />
-      {user && <UserButton/>}
+      {user ? (
+        <UserButton />
+      ) : (
+        <LoginButton>
+          <Button size={"default"} variant={"outline"}>
+            Login
+          </Button>
+        </LoginButton>
+      )}
     </div>
   );
 };

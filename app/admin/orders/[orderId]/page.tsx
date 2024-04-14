@@ -14,6 +14,9 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import axios from "axios";
+
+import { toast } from "sonner";
+import { Icons } from "@/components/icons";
 enum OrderStatus {
   PENDING = "PENDING",
   INITIALIZED = "INITIALIZED",
@@ -51,14 +54,16 @@ const OrderPage = ({ params }: { params: { orderId: string } }) => {
       const response = await axios.patch(`/api/admin/orders/${orderId}`, {
         status: newStatus,
       });
-  
+      toast.success("Order Status Updated")
     } catch (error) {
       console.error("Failed to update order status:", error);
     }
   };
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <div className="flex justify-center items-center">
+    <Icons.spinner className="h-4 w-4 animate-spin" />
+  </div>;
   }
 
   if (error) {

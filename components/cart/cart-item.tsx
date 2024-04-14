@@ -1,7 +1,6 @@
 "use client";
 
 import * as React from "react";
-import { Icons } from "../icons";
 import Image from "next/image";
 import { useCart } from "@/context/cart-context";
 import { type CartItem, Movie } from "@/types";

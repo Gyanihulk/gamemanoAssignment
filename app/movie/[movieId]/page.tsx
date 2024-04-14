@@ -9,6 +9,7 @@ import { Movie } from "@/types";
 import { formatPrice } from "@/lib/format";
 import { Button } from "@/components/ui/button";
 import { useCart } from "@/context/cart-context";
+import { Icons } from "@/components/icons";
 
 const MoviePage = ({ params }: { params: { movieId: string } }) => {
   const [isLoading, setIsLoading] = useState(true);
@@ -34,7 +35,9 @@ const MoviePage = ({ params }: { params: { movieId: string } }) => {
   }, [movieId]);
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <div className="flex justify-center items-center">
+    <Icons.spinner className="h-4 w-4 animate-spin" />
+  </div>;
   }
 
   if (error) {
@@ -43,15 +46,17 @@ const MoviePage = ({ params }: { params: { movieId: string } }) => {
 
   const { addToCart } = useCart();
   const onSubmit = async (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.stopPropagation(); 
-    addToCart(movie?.id)
+    e.stopPropagation();
+    addToCart(movie?.id);
   };
   return (
     <div>
       <Card className="w-[600px]">
         <CardHeader className="flex flex-row align-bottom">
           <p className="text-2xl font-semibold text-center">{movie?.title}</p>
-          <Button onClick={onSubmit} className="ml-auto mt-3" variant="default">Add</Button>
+          <Button onClick={onSubmit} className="ml-auto mt-3" variant="default">
+            Add
+          </Button>
         </CardHeader>
         <CardContent className="flex justify-center gap-3 ">
           <div className="bg-muted">
@@ -66,51 +71,36 @@ const MoviePage = ({ params }: { params: { movieId: string } }) => {
           <Card x-chunk="m-3 h-ful">
             <CardContent className="grid gap-8">
               <div className="flex items-center gap-4">
-                
                 <div className="grid gap-1">
-                  <p className="text-sm font-medium leading-none">
-                  Genres
-                  </p>
+                  <p className="text-sm font-medium leading-none">Genres</p>
                 </div>
                 <div className="ml-auto font-medium">{movie?.genres}</div>
               </div>
               <div className="flex items-center gap-4">
-                
                 <div className="grid gap-1">
-                  <p className="text-sm font-medium leading-none">
-                  Language
-                  </p>
+                  <p className="text-sm font-medium leading-none">Language</p>
                 </div>
                 <div className="ml-auto font-medium">{movie?.language}</div>
               </div>
               <div className="flex items-center gap-4">
-               
                 <div className="grid gap-1">
-                  <p className="text-sm font-medium leading-none">
-                  Director
-                  </p>
-                  
+                  <p className="text-sm font-medium leading-none">Director</p>
                 </div>
                 <div className="ml-auto font-medium">{movie?.director}</div>
               </div>
               <div className="flex items-center gap-4">
-                
                 <div className="grid gap-1">
-                  <p className="text-sm font-medium leading-none">
-                  Actors
-                  </p>
-                 
+                  <p className="text-sm font-medium leading-none">Actors</p>
                 </div>
                 <div className="ml-auto font-medium">{movie?.actors}</div>
               </div>
               <div className="flex items-center gap-4">
                 <div className="grid gap-1">
-                  <p className="text-sm font-medium leading-none">
-                  Price
-                  </p>
-                  
+                  <p className="text-sm font-medium leading-none">Price</p>
                 </div>
-                <div className="ml-auto font-medium">{formatPrice(movie?.price)}</div>
+                <div className="ml-auto font-medium">
+                  {formatPrice(movie?.price)}
+                </div>
               </div>
             </CardContent>
           </Card>

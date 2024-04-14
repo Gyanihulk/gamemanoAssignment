@@ -19,6 +19,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
+
 const AdminPage = () => {
   const [orders, setOrders] = useState([]);
   
@@ -45,7 +46,9 @@ const AdminPage = () => {
       </CardHeader>
       <CardContent className="space-y-4">
         <RoleGate allowedRole={UserRole.ADMIN}>
-        <DataTable columns={columns} data={orders} />
+       {orders? <DataTable columns={columns} data={orders} />:<div className="flex justify-center items-center">
+        <Icons.spinner className="h-4 w-4 animate-spin" />
+      </div>}
         </RoleGate>
       </CardContent>
     </Card>
