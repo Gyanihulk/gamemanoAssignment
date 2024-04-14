@@ -25,7 +25,7 @@ export async function PUT(request: Request) {
        
         // Check if the movie is already in the cart
         const existingCartItem = cart.cartItems.find(
-            (item: Movie) => item.id === movieId
+            (item: CartItem) => item.movieId  === movieId
         );
 
         if (existingCartItem) {
