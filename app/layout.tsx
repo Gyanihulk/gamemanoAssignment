@@ -27,7 +27,7 @@ export default async function RootLayout({
         <body className={inter.className}>
           <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
             <CartProvider>
-              <Toaster />
+              <Toaster position="top-center" />
               <div className="h-full ">
                 <div className="h-[80px] md:pl-56 fixed inset-y-0 w-full z-50">
                   <Navbar />

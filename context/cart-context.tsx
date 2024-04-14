@@ -15,6 +15,9 @@ interface CartContextValue {
   checkoutCart: () => void;
   cartTotal: number;
   cartCount: number;
+  openCartSheet: () => void;
+  closeCartSheet: () => void;
+  isCartSheetOpen: boolean;
 }
 
 const CartContext = createContext<CartContextValue>({
@@ -25,6 +28,9 @@ const CartContext = createContext<CartContextValue>({
   cartTotal: 0,
   cartCount: 0,
   checkoutCart: () => {},
+  openCartSheet: () => {},
+  closeCartSheet: () => {},
+  isCartSheetOpen: false,
 });
 
 export const useCart = () => {
@@ -37,14 +43,18 @@ interface Props {
 
 export const CartProvider = ({ children }: Props) => {
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
-  const [refresh, SetRefresh] = useState<Boolean>(false);
+  const [refresh, setRefresh] = useState<Boolean>(false);
+  const [cartTotal, setCartTotal] = useState<number>(0);
+
+
   const router = useRouter();
   useEffect(() => {
     const fetchProductData = async () => {
       try {
         const response = await fetch("/api/cart/");
-        const cartItems = await response.json();
-        setCartItems(cartItems.cartItems);
+        const cart = await response.json();
+        setCartItems(cart.cartItems);
+        setCartTotal(cart.total);
       } catch (error) {
         console.error("Failed to fetch product data:", error);
       }
@@ -58,7 +68,7 @@ export const CartProvider = ({ children }: Props) => {
       const response = await axios.put(`/api/cart/addMovie/`, { movieId });
       if (response.status === 200) {
         toast.success("Movie added to Cart");
-        SetRefresh(!refresh);
+        setRefresh(!refresh);
       } else {
         toast.error("Failed to add to  cart");
       }
@@ -78,6 +88,7 @@ export const CartProvider = ({ children }: Props) => {
         );
 
         toast.success("Cart item removed successfully");
+        setRefresh(!refresh);
       } else {
         toast.error("Failed to remove cart item");
       }
@@ -106,6 +117,7 @@ export const CartProvider = ({ children }: Props) => {
         });
 
         toast.success("Cart item quantity updated successfully");
+        setRefresh(!refresh);
       } else {
         toast.error("Failed to update cart item quantity");
       }
@@ -115,21 +127,24 @@ export const CartProvider = ({ children }: Props) => {
     }
   };
 
-  const cartTotal = cartItems.reduce(
-    (total, item) => total + item.movie.price * item.quantity,
-    0
-  );
-
   const cartCount = cartItems.reduce((count, item) => count + item.quantity, 0);
 
   const checkoutCart = async () => {
     try {
-      const response = await axios.post(`/api/cart/checkout`);
-      if (response.status === 200) {
-        toast.success("Checkout successful! Order has been created. Redirect to payment page.");
-      } else {
-        toast.error("Checkout failed. Please try again.");
-      }
+      if (cartItems.length > 0) {
+        const response = await axios.post(`/api/cart/checkout`);
+        if (response.status === 200) {
+          toast.success(
+            "Checkout successful! Order has been created. Redirect to payment page."
+          );
+          closeCartSheet();
+          setRefresh(!refresh);
+        } else {
+          toast.error("Checkout failed. Please try again.");
+        }
+      }else{ toast.error(
+        "Please add some Dvds."
+      );}
     } catch (error) {
       if (axios.isAxiosError(error)) {
         if (error.response?.status === 400) {

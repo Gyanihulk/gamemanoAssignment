@@ -61,12 +61,12 @@ const OrderPage = () => {
 
               return (
                 <Button
-                  variant="ghost"
+                  variant="small"
                   onClick={handleDeliver}
                   disabled={row.original.status === "DELIVERED"}
                 >
                   <CheckCircle className="mr-2 h-4 w-4" />
-                  Deliver
+                  Mark delivered
                 </Button>
               );
             },

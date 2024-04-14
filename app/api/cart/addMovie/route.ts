@@ -23,19 +23,16 @@ export async function PUT(request: Request) {
             });
         }
        
-        // Check if the movie is already in the cart
         const existingCartItem = cart.cartItems.find(
             (item: CartItem) => item.movieId  === movieId
         );
 
         if (existingCartItem) {
-            // If the movie is already in the cart, update the quantity
             await db.cartItem.update({
                 where: { id: existingCartItem.id },
                 data: { quantity: { increment: 1 } },
             });
         } else {
-            // If the movie is not in the cart, add a new cart item
             await db.cartItem.create({
                 data: {
                     movieId,
@@ -44,7 +41,6 @@ export async function PUT(request: Request) {
             });
         }
      
-        // Update the cart total
         const updatedCartItems = await db.cartItem.findMany({
             where: { cartId: cart.id },
             include: { movie: true },

@@ -20,7 +20,7 @@ export default function CartSheet() {
   const itemCount = cartItems.reduce((total, item) => total + item.quantity, 0);
 
   return (
-    <Sheet>
+    <Sheet  >
       <SheetTrigger asChild>
         <Button
           aria-label="Cart"
