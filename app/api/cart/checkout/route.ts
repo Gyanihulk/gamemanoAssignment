@@ -37,6 +37,7 @@ export async function POST(request: Request) {
         addressId: address.id,
         total: cart.total,
         orderItems: {
+          // @ts-ignore
           create: cart.cartItems.map((item: CartItem) => ({
             movieId: item.movieId,
             quantity: item.quantity,

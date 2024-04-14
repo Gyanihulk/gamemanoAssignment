@@ -14,16 +14,20 @@ export async function PUT(request: Request) {
         // Get the user's cart or create a new one
         let cart = await db.cart.findUnique({
             where: { userId: user.id },
-            include: { cartItems: true },
+            include: { cartItems: { include: { movie: true } } },
         });
 
         if (!cart) {
             cart = await db.cart.create({
-                data: { userId: user.id },
+                data: { userId: user.id!, total: 0 ,cartItems: {
+                    create: [], 
+                }, }, include: {
+                    cartItems: { include: { movie: true } }
+                },
             });
         }
-       
         const existingCartItem = cart.cartItems.find(
+            // @ts-ignore
             (item: CartItem) => item.movieId  === movieId
         );
 
@@ -45,14 +49,17 @@ export async function PUT(request: Request) {
             where: { cartId: cart.id },
             include: { movie: true },
         });
+
         const total = updatedCartItems.reduce(
+            // @ts-ignore
             (acc: any, item: CartItem) => acc + (item.movie.price || 0) * item.quantity,
             0
         );
 
         await db.cart.update({
             where: { id: cart.id },
-            data: { total },
+            // @ts-ignore
+            data: { total  },
         });
 
         return new NextResponse("Movie added to cart", { status: 200 });

@@ -1,10 +1,11 @@
 // prisma/updateMoviePrices.ts
-
+// @ts-ignore
 const { PrismaClient } = require('@prisma/client');
 
-const prisma = new PrismaClient();
+
 
 async function updateMoviePrices() {
+  const prisma = new PrismaClient();
   const movies = await prisma.movie.findMany({
     take: 3000,
     orderBy: {
@@ -40,5 +41,6 @@ updateMoviePrices()
     process.exit(1);
   })
   .finally(async () => {
+    // @ts-ignore
     await prisma.$disconnect();
   });

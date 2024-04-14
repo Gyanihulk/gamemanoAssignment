@@ -95,7 +95,7 @@ export async function DELETE(
     }
 
     // Store the price and quantity before deletion to adjust the total
-    const itemTotal = cartItem.movie.price * cartItem.quantity;
+    const itemTotal = cartItem.movie.price as number * cartItem.quantity;
 
     await db.cartItem.delete({
       where: { id: params.cartItemId },

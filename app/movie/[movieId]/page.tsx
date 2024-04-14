@@ -14,9 +14,9 @@ import { Icons } from "@/components/icons";
 const MoviePage = ({ params }: { params: { movieId: string } }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [movie, setMovie] = useState<Movie | undefined>();
+  const [movie, setMovie] = useState<Movie>();
   const { movieId } = params;
-
+  const { addToCart } = useCart();
   useEffect(() => {
     const fetchOrderStatus = async () => {
       setIsLoading(true);
@@ -26,7 +26,7 @@ const MoviePage = ({ params }: { params: { movieId: string } }) => {
         setIsLoading(false);
       } catch (error) {
         console.error("Failed to fetch movie:", error);
-        setError(error);
+        setError(error as any);
         setIsLoading(false);
       }
     };
@@ -35,16 +35,17 @@ const MoviePage = ({ params }: { params: { movieId: string } }) => {
   }, [movieId]);
 
   if (isLoading) {
-    return <div className="flex justify-center items-center">
-    <Icons.spinner className="h-4 w-4 animate-spin" />
-  </div>;
+    return (
+      <div className="flex justify-center items-center">
+        <Icons.spinner className="h-4 w-4 animate-spin" />
+      </div>
+    );
   }
 
-  if (error) {
-    return <div>Error: {error.message}</div>;
+  if (!movie || !movie.id || !movie.posterUrl || !movie.price) {
+    return;
   }
 
-  const { addToCart } = useCart();
   const onSubmit = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
     addToCart(movie?.id);

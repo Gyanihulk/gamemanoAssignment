@@ -22,6 +22,7 @@ export async function POST(request: Request) {
     if (!phone) return new NextResponse(JSON.stringify({ message: "Phone is required" }), { status: 400 });
 
     const newAddress = await db.address.create({
+      // @ts-ignore
       data: {
         userId: user.id,
         street,

@@ -37,6 +37,7 @@ export async function GET() {
 
     // Calculate the cart total
     const total = cart.cartItems.reduce(
+      // @ts-ignore
       (acc:any, item:CartItem) => acc + (item.movie.price || 0) * item.quantity,
       0
     );

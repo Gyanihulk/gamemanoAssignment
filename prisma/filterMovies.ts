@@ -1,5 +1,9 @@
+
+// @ts-ignore
 const fs = require('fs');
+// @ts-ignore
 const Papa = require('papaparse');
+// @ts-ignore
 const path = require('path');
 
 const tsvFilePath = path.resolve(__dirname, 'title.basics.tsv');

@@ -11,8 +11,9 @@ import { Button } from "@/components/ui/button";
 import { CheckCircle } from "lucide-react";
 
 import { Icons } from "@/components/icons";
+import { Order } from "@/types";
 const OrderPage = () => {
-  const [orders, setOrders] = useState([]);
+  const [orders, setOrders] = useState<Order[]>([]);
 
   useEffect(() => {
     (async () => {
@@ -31,7 +32,7 @@ const OrderPage = () => {
 
   // Update the specific order's status in the state
   const updateOrderStatus = (orderId: string) => {
-    setOrders((currentOrders) =>
+    setOrders((currentOrders: Order[]) =>
       currentOrders.map((order) =>
         order.id === orderId ? { ...order, status: "DELIVERED" } : order
       )
@@ -45,7 +46,7 @@ const OrderPage = () => {
         if (column.id === "deliver") {
           return {
             ...column,
-            cell: ({ row }) => {
+            cell: ({ row }: { row: any }) => {
               const handleDeliver = async () => {
                 try {
                   await axios.post(

@@ -13,7 +13,7 @@ interface MovieCardProps {
   title: string;
   imageUrl: string;
   price: number;
-  category: string;
+  genre: string;
 }
 
 export const MovieCard = ({
@@ -21,7 +21,7 @@ export const MovieCard = ({
   title,
   imageUrl,
   price,
-  category,
+  genre,
 }: MovieCardProps) => {
   const router = useRouter();
   const { addToCart } = useCart();
@@ -46,7 +46,7 @@ export const MovieCard = ({
               </div>
            
           </Link>
-          <p className="text-xs text-muted-foreground">{category}</p>
+          <p className="text-xs text-muted-foreground">{genre}</p>
 
           <p className="text-md md:text-sm font-medium text-slate-700">
             {formatPrice(price)}

@@ -20,7 +20,7 @@ export const MoviesList = ({
             title={item?.title}
             imageUrl={item?.posterUrl!}
             price={item?.price!}
-            category={item?.category?.name!}
+            genre={item?.genres[0]}
           />
         ))}
       </div>

@@ -39,7 +39,7 @@ const OrderPage = ({ params }: { params: { orderId: string } }) => {
         setIsLoading(false);
       } catch (error) {
         console.error("Failed to fetch order status:", error);
-        setError(error);
+        setError(error as any); 
         setIsLoading(false);
       }
     };
@@ -54,21 +54,20 @@ const OrderPage = ({ params }: { params: { orderId: string } }) => {
       const response = await axios.patch(`/api/admin/orders/${orderId}`, {
         status: newStatus,
       });
-      toast.success("Order Status Updated")
+      toast.success("Order Status Updated");
     } catch (error) {
       console.error("Failed to update order status:", error);
     }
   };
 
   if (isLoading) {
-    return <div className="flex justify-center items-center">
-    <Icons.spinner className="h-4 w-4 animate-spin" />
-  </div>;
+    return (
+      <div className="flex justify-center items-center">
+        <Icons.spinner className="h-4 w-4 animate-spin" />
+      </div>
+    );
   }
 
-  if (error) {
-    return <div>Error: {error.message}</div>;
-  }
   return (
     <div>
       <Card className="w-[300px]">

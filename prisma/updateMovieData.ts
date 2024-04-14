@@ -1,12 +1,13 @@
 // prisma/updateMovies.ts
-
+// @ts-ignore
 const { PrismaClient } = require('@prisma/client');
 const axios=require("axios")
 
-const prisma = new PrismaClient();
+
 const OMDB_API_KEY = '7a80d0a3'; // Replace with your actual OMDb API key
 
 async function updateMovieDetails() {
+  const prisma = new PrismaClient();
   const movies = await prisma.movie.findMany({
     skip: 2000, // Skip the first 2000 records
     take: 1000,  // Fetch top 1000 movies
@@ -14,7 +15,7 @@ async function updateMovieDetails() {
       releaseDate: 'desc',
     },
   });
-
+  
   for (const movie of movies) {
     try {
       const omdbResponse = await axios.get(`https://www.omdbapi.com/?apikey=${OMDB_API_KEY}&i=${movie.imdbID}`);
@@ -68,6 +69,4 @@ updateMovieDetails()
     console.error(e);
     process.exit(1);
   })
-  .finally(async () => {
-    await prisma.$disconnect();
-  });
+  

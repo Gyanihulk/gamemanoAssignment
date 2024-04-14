@@ -18,7 +18,6 @@ import { CardWrapper } from "@/components/auth/card-wrapper";
 import { Button } from "@/components/ui/button";
 import { FormError } from "@/components/form-error";
 import { FormSuccess } from "@/components/form-success";
-import { register } from "@/actions/register";
 import { AddressSchema } from "@/schemas";
 import axios from "axios";
 
@@ -77,9 +76,10 @@ export const AddressForm = () => {
         setAddressExists(true);
         setAddressId(response.data.id); // Store the new address ID if the address didn't exist before
       }
-    } catch (error) {
-      if (error.response && error.response.data && error.response.data.message) {
-        setError(error.response.data.message);
+    } catch (err) {
+      const error = err as any;
+      if (error.response && error.response.data) {
+        setError(error.response.data.message as string);
       } else {
         setError("Failed to process address. Please try again.");
       }

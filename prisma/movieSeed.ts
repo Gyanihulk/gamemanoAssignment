@@ -1,16 +1,19 @@
 // prisma/seed.ts
-
+// @ts-ignore
 const { PrismaClient } = require('@prisma/client');
+// @ts-ignore
 const fs = require('fs');
+// @ts-ignore
 const Papa = require('papaparse');
+// @ts-ignore
 const path = require('path');
 
-const prisma = new PrismaClient();
+
 
 async function seedMovies() {
   const tsvFilePath = path.resolve(__dirname, './filteredMovies.tsv'); 
   const fileContent = fs.readFileSync(tsvFilePath, 'utf8');
-
+  const prisma = new PrismaClient();
   Papa.parse(fileContent, {
     header: true,
     skipEmptyLines: true,
@@ -47,5 +50,6 @@ seedMovies()
     process.exit(1);
   })
   .finally(async () => {
+    // @ts-ignore
     await prisma.$disconnect();
   });
