@@ -24,7 +24,6 @@ export async function GET() {
       createdAt: "desc",
     },
     });
-console.log(orders)
     return new NextResponse(JSON.stringify(orders), { status: 200 });
   } catch (error) {
     console.error("[GET_MY_ORDERS_API]", error);

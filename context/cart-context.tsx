@@ -15,9 +15,7 @@ interface CartContextValue {
   checkoutCart: () => void;
   cartTotal: number;
   cartCount: number;
-  openCartSheet: () => void;
-  closeCartSheet: () => void;
-  isCartSheetOpen: boolean;
+
 }
 
 const CartContext = createContext<CartContextValue>({
@@ -28,9 +26,6 @@ const CartContext = createContext<CartContextValue>({
   cartTotal: 0,
   cartCount: 0,
   checkoutCart: () => {},
-  openCartSheet: () => {},
-  closeCartSheet: () => {},
-  isCartSheetOpen: false,
 });
 
 export const useCart = () => {
@@ -137,7 +132,6 @@ export const CartProvider = ({ children }: Props) => {
           toast.success(
             "Checkout successful! Order has been created. Redirect to payment page."
           );
-          closeCartSheet();
           setRefresh(!refresh);
         } else {
           toast.error("Checkout failed. Please try again.");

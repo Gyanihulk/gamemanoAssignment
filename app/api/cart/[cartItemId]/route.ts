@@ -46,7 +46,7 @@ export async function PATCH(
       where: { cartId: cartItem.cartId },
       include: { movie: true },
     });
-    console.log(cartItems)
+
     const newTotal = cartItems.reduce((acc:number, item:any) => {
       // Check if the movie property exists and has a price before adding to the total
       return item.movie && item.movie.price ? acc + item.movie.price * item.quantity : acc;

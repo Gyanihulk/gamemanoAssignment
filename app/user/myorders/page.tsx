@@ -65,8 +65,8 @@ const OrderPage = () => {
                   onClick={handleDeliver}
                   disabled={row.original.status === "DELIVERED"}
                 >
-                  <CheckCircle className="mr-2 h-4 w-4" />
-                  Mark delivered
+                  
+                  {row.original.status === "DELIVERED"?"Already delivered. ":<><CheckCircle className="mr-2 h-4 w-4" />Mark delivered</>} 
                 </Button>
               );
             },

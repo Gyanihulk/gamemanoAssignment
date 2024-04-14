@@ -5,7 +5,7 @@ import { SearchInput } from "@/components/search-input";
 import { MoviesList } from "@/components/movie-list";
 import { Icons } from '@/components/icons';
 
-interface SearchPageProps {
+export interface SearchPageProps {
   searchParams: {
     title?: string;
     genreName?: string;

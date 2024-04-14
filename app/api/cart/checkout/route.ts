@@ -29,7 +29,7 @@ export async function POST(request: Request) {
     if (!cart || cart.cartItems.length === 0) {
       return new NextResponse("Cart is empty", { status: 400 });
     }
-console.log(cart)
+
     // Create the order
     const order = await db.order.create({
       data: {
